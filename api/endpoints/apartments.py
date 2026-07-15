@@ -17,10 +17,10 @@ from api.endpoints.utils import raise_exception
 
 from actions.utils import upload_image
 
-router = APIRouter()
+router = APIRouter(prefix="/apartments")
 
 
-@router.get("/apartments-fetch/", response_model=list[apartment_schemas.ApartmentOut])
+@router.get("/fetch", response_model=list[apartment_schemas.ApartmentOut])
 async def show_apartments(
     limit: int = 20,
     offset: int = 0,
@@ -32,7 +32,7 @@ async def show_apartments(
     return apartments
 
 
-@router.get("/apartments-filter/", response_model=list[apartment_schemas.ApartmentOut])
+@router.get("/filter", response_model=list[apartment_schemas.ApartmentOut])
 async def filter_through_apartments(
     filters: apartment_schemas.ApartmentFilter = Depends(),
     _ = Depends(role_checker(mtl.UserRole.TENANT, mtl.UserRole.ADMIN)),
@@ -42,7 +42,7 @@ async def filter_through_apartments(
     return apartments
 
 
-@router.get("/apartments-fetch-your/", response_model=list[apartment_schemas.ApartmentOut])
+@router.get("/fetch-your", response_model=list[apartment_schemas.ApartmentOut])
 async def show_your_apartments(
     limit: int = 20,
     offset: int = 0,
@@ -60,7 +60,7 @@ async def show_your_apartments(
         raise_exception(404, "Apartments not found")
     return apartments
 
-@router.post("/apartments-add/", response_model=apartment_schemas.ApartmentOut)
+@router.post("/add", response_model=apartment_schemas.ApartmentOut)
 async def add_new_apartment(
     detail: apartment_schemas.ApartmentCreate,
     landlord_id: UUID | None =None,
@@ -78,7 +78,7 @@ async def add_new_apartment(
     return apartment
 
 @router.post(
-    "/apartments-add-media/",
+    "/add-media",
     response_model=apartment_schemas.ApartmentOut
 )
 async def add_new_apartment_media(
@@ -121,7 +121,7 @@ async def add_new_apartment_media(
     return apartment
 
 
-@router.put("/apartment-edit/", response_model=apartment_schemas.ApartmentOut)
+@router.put("/apartment-edit", response_model=apartment_schemas.ApartmentOut)
 async def edit_apartment(
     apartment_id: UUID,
     detail: apartment_schemas.ApartmentUpdate,
@@ -141,7 +141,7 @@ async def edit_apartment(
 
 
 
-@router.delete("/apartment-remove/")
+@router.delete("/apartment-remove")
 async def remove_apartment(
     apartment_id: UUID = None,
     current_user=Depends(role_checker(mtl.UserRole.LANDLORD, mtl.UserRole.ADMIN)),

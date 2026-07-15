@@ -12,7 +12,6 @@ from database.config_db import get_session
 
 router = APIRouter()
 
-ACCESS_TOKEN_EXPIRES_DAYS = 15
 
 @router.post("/token")
 async def signin_client(
@@ -31,7 +30,6 @@ async def signin_client(
 
     access_token = create_access_token(
         data = {"sub": user.email},
-        expires_delta = timedelta(days=ACCESS_TOKEN_EXPIRES_DAYS)
     )
 
     return {

@@ -14,9 +14,9 @@ from database.config_db import get_session
 from api.endpoints.authorize import role_checker
 from api.endpoints.utils import raise_exception
 
-router = APIRouter()
+router = APIRouter(prefix="/users")
 
-@router.get("/users-fetch/", response_model=list[users_schemas.UserOut])
+@router.get("/fetch", response_model=list[users_schemas.UserOut])
 async def show_users(
     sort_term: str | None = None,
     sort_dir: str | None = None,
@@ -29,7 +29,7 @@ async def show_users(
     return users
 
 
-@router.get("/users-search/", response_model=list[users_schemas.UserOut])
+@router.get("/search", response_model=list[users_schemas.UserOut])
 async def find_users(
     search_term: str | None = None,
     _ = Depends(role_checker(mtl.UserRole.ADMIN)),
@@ -45,7 +45,7 @@ async def find_users(
         raise_exception(404, "Users not found")
     return users
 
-@router.get("/users-me/", response_model=users_schemas.UserOut)
+@router.get("/me", response_model=users_schemas.UserOut)
 async def get_me(
     current_user = Depends(role_checker(
         mtl.UserRole.TENANT, mtl.UserRole.LANDLORD, mtl.UserRole.AGENT, mtl.UserRole.ADMIN
@@ -53,7 +53,7 @@ async def get_me(
 ):
     return current_user
 
-@router.post("/users-add/", response_model=users_schemas.UserOut)
+@router.post("/add", response_model=users_schemas.UserOut)
 async def add_new_user(
     user_detail: users_schemas.UserCreate,
     db: AsyncSession = Depends(get_session)
@@ -64,7 +64,7 @@ async def add_new_user(
     return user
 
 
-@router.put("/users-update/", response_model=users_schemas.UserOut)
+@router.put("/update", response_model=users_schemas.UserOut)
 async def edit_user(
     detail: users_schemas.UserUpdate,
     target_user_id: str | None = Query(None, description="ID of the user to edit (Admins only)"),
@@ -84,7 +84,7 @@ async def edit_user(
     return user
 
 
-@router.put("/users-change-role/", response_model=users_schemas.UserOut)
+@router.put("/change-role/", response_model=users_schemas.UserOut)
 async def modify_role(
     target_user_id: str = Query(..., description="ID of the user to change role"),
     new_role: str | mtl.UserRole = Query(..., description="New role to assign"),
@@ -97,7 +97,7 @@ async def modify_role(
     return user
 
 
-@router.delete("/users-remove/")
+@router.delete("/remove")
 async def remove_user(
     target_user_id: str | None = Query(None, description="ID of the user to remove (Admins only)"),
     current_user=Depends(role_checker(
