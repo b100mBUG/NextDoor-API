@@ -1,32 +1,20 @@
 # NextDoor API
 
-A location-aware house rental discovery backend. Tenants find rental properties near them, view details and images, then contact landlords directly via WhatsApp or phone — all from one platform.
+Backend for a location-aware house rental platform. Tenants find rental listings near them, view photos and details, then contact the landlord directly by WhatsApp or phone, no middleman.
 
-Built with **FastAPI**, deployed live on **Render**, and powered by **PostgreSQL on Neon**.
+Built with FastAPI, deployed on Render, backed by PostgreSQL on Neon.
 
-📖 **Live API Docs:** [https://nextdoor-grf8.onrender.com/docs](https://nextdoor-grf8.onrender.com/docs)
+Live API docs: https://nextdoor-grf8.onrender.com/docs
 
----
+## What it does
 
-## Features
+Landlords and tenants sign up under different roles with role-based permissions. Landlords post listings with photos (stored on Cloudinary) and details. Tenants search by proximity to find houses near their current location, open a listing to see full details, and get the landlord's contact info directly, so the actual negotiation happens off-platform, the way house hunting usually works here.
 
-- **Tenant & landlord accounts** — separate roles with different permissions via RBAC
-- **House listings** — landlords post rental properties with images and details
-- **Location-based discovery** — tenants find houses near their current location
-- **Image uploads** — property photos uploaded and served via Cloudinary
-- **Direct contact** — listings include landlord WhatsApp and phone number for direct communication
-- **Role-Based Access Control (RBAC)** — landlords manage listings, tenants browse and enquire
-- **JWT authentication** — all protected routes secured with access tokens
+## Stack
 
----
+FastAPI, PostgreSQL, SQLAlchemy, Cloudinary for image storage, JWT auth, role-based access control. Deployed on Render with Neon for the database.
 
-## Tech Stack
-
-FastAPI · PostgreSQL · SQLAlchemy · Cloudinary · JWT · RBAC · Render · Neon DB
-
----
-
-## API Overview
+## API overview
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -39,40 +27,27 @@ FastAPI · PostgreSQL · SQLAlchemy · Cloudinary · JWT · RBAC · Render · Ne
 | DELETE | `/houses/{id}` | Remove a listing (landlord only) |
 | GET | `/houses/{id}/contact` | Get landlord contact details |
 
-> Full interactive documentation available at the live docs link above.
+Full interactive docs are at the live link above.
 
----
-
-## Running Locally
+## Running locally
 
 ```bash
-# Clone the repo
 git clone https://github.com/b100mBUG/nextdoor.git
 cd nextdoor
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Set up environment variables
 cp .env.example .env
-# Fill in: DATABASE_URL, SECRET_KEY, CLOUDINARY_URL
-
-# Run the server
+# fill in DATABASE_URL, SECRET_KEY, CLOUDINARY_URL
 uvicorn main:app --reload
 ```
 
----
-
-## Environment Variables
+## Environment variables
 
 | Variable | Description |
-|----------|-------------|
+|----------|--------------|
 | `DATABASE_URL` | PostgreSQL connection string (Neon) |
 | `SECRET_KEY` | JWT signing secret |
 | `CLOUDINARY_URL` | Cloudinary API URL for image uploads |
 
----
-
 ## Author
 
-**Were Fidel Castro** — [github.com/b100mBUG](https://github.com/b100mBUG) · [Portfolio](https://werefidelcastro.onrender.com)
+Were Fidel Castro. [GitHub](https://github.com/b100mBUG). [Portfolio](https://werefidelcastro.onrender.com).

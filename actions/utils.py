@@ -6,7 +6,7 @@ import cloudinary.api
 import os
 from dotenv import load_dotenv
 
-load_dotenv("actions/config.env")
+load_dotenv(".env")
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated="auto")
 
